@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_nav_graph"
+    app:startDestination="@id/welcomeUserFragment">
+
+    <fragment
+        android:id="@+id/welcomeUserFragment"
+        android:name="com.example.navigationapp.WelcomeUserFragment"
+        android:label="fragment_welcome_user"
+        tools:layout="@layout/fragment_welcome_user" >
+        <action
+            android:id="@+id/action_welcomeUserFragment_to_entryFragment"
+            app:destination="@id/entryFragment" />
+        <action
+            android:id="@+id/action_welcomeUserFragment_to_listViewFragment"
+            app:destination="@id/listViewFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/listViewFragment"
+        android:name="com.example.navigationapp.ListViewFragment"
+        android:label="fragment_list_view"
+        tools:layout="@layout/fragment_list_view" >
+        <action
+            android:id="@+id/action_listViewFragment_to_entryFragment"
+            app:destination="@id/entryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/entryFragment"
+        android:name="com.example.navigationapp.EntryFragment"
+        android:label="fragment_entry"
+        tools:layout="@layout/fragment_entry" >
+        <action
+            android:id="@+id/action_entryFragment_to_listViewFragment"
+            app:destination="@id/listViewFragment" />
+    </fragment>
+</navigation>

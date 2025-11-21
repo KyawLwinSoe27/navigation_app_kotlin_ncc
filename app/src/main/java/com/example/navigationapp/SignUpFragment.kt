@@ -1,15 +1,21 @@
 package com.example.navigationapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.navigationapp.databinding.FragmentSignUpBinding
+import org.json.JSONObject
 
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding
@@ -81,10 +87,57 @@ class SignUpFragment : Fragment() {
             return
         }
 
-        Toast.makeText(context, "Sign-Up Successful", Toast.LENGTH_LONG).show()
-        val action = SignUpFragmentDirections.actionSignUpFragmentToLoginFragment()
-        findNavController().navigate(action)
+//        Toast.makeText(context, "Sign-Up Successful", Toast.LENGTH_LONG).show()
+//        val action = SignUpFragmentDirections.actionSignUpFragmentToLoginFragment()
+//        findNavController().navigate(action)
+
+        registerUser(firstName, lastName, email, username, password)
 
         // Here you can add further sign-up logic, such as saving the user data or navigating to another screen.
+    }
+
+    private fun registerUser(
+        firstName: String,
+        lastName: String,
+        email: String,
+        username: String,
+        password: String
+    ) {
+      val url = "http://192.168.1.7:8000/registerUser.php"
+        val request = object:StringRequest(Method.POST, url,
+            Response.Listener{
+                response ->
+                Log.d("SignUpFragment", "Response: $response")
+//                val obj = JSONObject(response)
+                val action = SignUpFragmentDirections.actionSignUpFragmentToLoginFragment()
+                findNavController().navigate(action)
+            },
+            Response.ErrorListener {
+                error ->
+                Log.d("SignUpFragment", "Error: $error")
+                showAlert("Registration failed: $error")
+            }
+            ) {
+            override fun getParams(): Map<String, String>? {
+                return  mapOf("fname" to firstName,
+                    "lname" to lastName,
+                    "email" to email,
+                    "username" to username,
+                    "password" to password,
+                    "remark" to "registering new user"
+                    )
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+        Log.d("SignUpFragment", "Request: $request")
+    }
+
+    private fun showAlert(msg: String) {
+        val alert = AlertDialog.Builder(requireContext())
+        alert.setTitle("Warning").setMessage(msg).setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }.setCancelable(false)
+        val alertDialog = alert.create()
+        alertDialog.show()
     }
 }
