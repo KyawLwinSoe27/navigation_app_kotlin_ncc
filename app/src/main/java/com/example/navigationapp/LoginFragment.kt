@@ -1,5 +1,6 @@
 package com.example.navigationapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -88,8 +89,14 @@ class LoginFragment : Fragment() {
                     val user = obj.get("user") as JSONObject
                     val st = "Hello, ${user.getString("firstname")} ${user.getString("lastname")} ${user.getString("email")}"
                     Toast.makeText(context, st, Toast.LENGTH_LONG).show()
-                    val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                    findNavController().navigate(action)
+
+                    val intent = Intent(context, UserActivity::class.java)
+                    intent.putExtra("id", user.getInt("id"))
+                    intent.putExtra("firstname", user.getString("firstname"))
+                    intent.putExtra("lastname", user.getString("lastname"))
+                    intent.putExtra("username", user.getString("username"))
+                    startActivity(intent)
+                    activity?.finish()
                 } else {
                     Toast.makeText(context, "Login Failed", Toast.LENGTH_LONG).show()
                 }

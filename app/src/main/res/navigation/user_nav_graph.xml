@@ -19,6 +19,10 @@
         <argument
             android:name="id"
             app:argType="integer" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="Guest" />
     </fragment>
     <fragment
         android:id="@+id/listViewFragment"
@@ -28,6 +32,9 @@
         <action
             android:id="@+id/action_listViewFragment_to_entryFragment"
             app:destination="@id/entryFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/entryFragment"
@@ -37,5 +44,8 @@
         <action
             android:id="@+id/action_entryFragment_to_listViewFragment"
             app:destination="@id/listViewFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 </navigation>
